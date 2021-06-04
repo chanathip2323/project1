@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+  <!-- Medium Editor -->
+  <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+    type="text/css" media="screen" charset="utf-8">
+
+  <!-- Custom Style -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+  {% if title %}
+  <title>Django Blog - {{ title }}</title>
+  {% else %}
+  <title>Django Blog</title>
+  {% endif %}
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #EE8980">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="{% url 'index' %}">Live Diary</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+          aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--<div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'index' %}">หน้าเเรก</a>
+            <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+            <a class="nav-item nav-link" href="{% url 'calendar' %}">ปฏิทิน</a>
+          </div>-->
+          <!-- Navbar Right Side -->
+          <div class="collapse navbar-collapse " id="navbarToggle" ><!--navbar-nave-->
+            {% if user.is_authenticated %}
+            <!--<a class="btn btn-outline-danger" href="{% url 'post_create' %}">เขียนรายการใหม่
+            <i class="fa fa-plus "></i> </a>-->
+            <a class="nav-item nav-link" href="{% url 'profile' %}">บัญชี
+            <i class="fa fa-user "></i> </a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">ออกจากระบบ
+            <i class="fa fa-sign-out "> </i>  </a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">เข้าสู่ระบบ</a>
+            <a class="nav-item nav-link" href="{% url 'register' %}">ลงทะเบียน</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container ">
+    {% if user.is_authenticated %}
+     <div class="row align-items-center ">
+     <div class="col ">
+      <a class="btn btn-outline-secondary " href="{% url 'index' %}"><i class=" fa fa-home "></i> หน้าเเรก</a>
+     </div>
+     <div class="col">
+      <a class="btn btn-outline-danger " href="{% url 'post_create' %}"><i class="fa fa-plus "></i> เขียนรายการใหม่ </a>
+     </div>
+     <div class="col">
+      <a class="btn btn-outline-success " href="{% url 'calendar' %}"><i class=" fa fa-calendar "></i> ปฏิทิน</a>
+     </div>
+     <div class="col ">
+      <a class="btn btn-outline-warning " href="{% url 'about' %}"><i class=" fa fa-user "></i> About</a>
+     </div>
+    {% else %}
+    {% endif %}
+  </div>
+  <p></p>
+  <main role="main" class="container" > <!--style="background-color: #FFCDAA"-->
+    <div class="row-center ">
+      <div class="col-md-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+      <!--<div class="col-md-4 my-2 my-lg-3 pb-2">
+        <div class="content-section">
+          <h3>แถบด้านข้างของเรา<!--Our Sidebar--></h3>
+          <!--<p class='text-muted'>คุณสามารถใส่ข้อมูลที่ต้องการได้ที่นี่<!--You can put any information here you'd like.-->
+            <!--<ul class="list-group">
+              <li class="list-group-item list-group-item-light">โพสต์ล่าสุด<!--Latest Posts--></li>
+              <!--<li class="list-group-item list-group-item-light">ประกาศ<!--Announcements--></li>
+              <!--<li class="list-group-item list-group-item-light">ปฏิทิน<!--Calendars--></li>
+              <!--<li class="list-group-item list-group-item-light">etc</li>
+            </ul>
+          </p>
+        </div>
+      </div>-->
+    </div>
+  </main>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+
+  <!-- Optional JavaScript -->
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
